@@ -41,8 +41,8 @@
         })
 
         $( document ).ajaxStop(function(){
-            document.getElementById('element').innerHTML = '<p>The articles was inserted</p>';
-            alert('The articles was inserted');
+            document.getElementById('element').innerHTML = '<p>The articles were inserted</p>';
+            alert('The articles were inserted');
             window.location.replace('/');
         });
 
