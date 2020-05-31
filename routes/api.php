@@ -20,3 +20,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('/get_links','SeedController@actionAsync');
 Route::post('/insert_results','SeedController@actionAsyncArticle');
+Route::post('/get_suggestions_info','SearchController@getSuggestions');

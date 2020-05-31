@@ -14,10 +14,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('search');
 });
 
 Route::get('/seed', function () {
     return view('seed');
 });
+
+Route::get('/results', 'SearchController@results');
 

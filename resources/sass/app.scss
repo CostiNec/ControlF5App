@@ -7,6 +7,18 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap');
+
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+body, html {
+    margin: 0;
+    height: 100vh;
+    background-color: white;
+}
+
 .loader {
     margin: auto;
     border: 16px solid #f3f3f3;
@@ -33,26 +45,30 @@
     height: 100%;
     width: 0;
     position: fixed;
-    z-index: 1;
+    z-index: 2;
     top: 0;
     left: 0;
-    background-color: #111;
+    background-color: white;
     overflow-x: hidden;
     transition: 0.5s;
-    padding-top: 60px;
+    padding-top: 15px;
+    padding-left: 15px;
 }
 
 .sidenav a {
-    padding: 8px 8px 8px 32px;
+    padding: 8px 12px 0px 0;
     text-decoration: none;
-    font-size: 25px;
     color: #818181;
     display: block;
     transition: 0.3s;
 }
 
 .sidenav a:hover {
-    color: #f1f1f1;
+    color: grey;
+}
+
+.google-color {
+    color: #818181
 }
 
 .sidenav .closebtn {
@@ -66,4 +82,182 @@
 @media screen and (max-height: 450px) {
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}
+}
+
+#content {
+    height: 100%;
+}
+
+.top {
+    padding: 12px 16px;
+}
+
+.top-selected {
+    color: #4285f4;
+    border-bottom: 2px solid #4285f4;
+
+    font-size: 12px;
+
+    font-weight: 600;
+    font-style: normal;
+    font-variant: normal;
+    text-transform: uppercase;
+    text-decoration: none solid rgb(66, 133, 244);
+    text-align: center;
+}
+
+.top-unselected {
+    color: #757575;
+    font-size: 12px;
+
+    font-weight: 600;
+    font-style: normal;
+    font-variant: normal;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.pb-border {
+    padding-bottom: 0.8rem !important;
+}
+
+.mt-3px {
+    margin-top: 3px;
+}
+
+.gb_D {
+    display: inline-block;
+    outline: none;
+    vertical-align: middle;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    height: 30px;
+    width: 30px;
+    color: #000;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.google-color-blue {
+    color: #3b78e7;
+}
+
+.right-search-border {
+    border-radius: 0 20px 20px 0;
+    background-color: #3b78e7;
+}
+
+.right-search-border i {
+    color: white;
+}
+
+.left-search-border {
+    border-radius: 20px 0 0 20px;
+}
+
+.h-unset {
+    height: unset!important;
+}
+
+.custom-padding {
+    padding: 0.875rem 0.95rem!important;
+}
+
+#put-grey {
+    position: absolute;
+}
+
+.nav-option {
+    white-space: nowrap;
+    font-size: 1rem;
+    color: rgba(0, 0, 0, 0.54)
+}
+
+.nav-icon-option {
+    margin-left: -5px;
+    color: rgba(0, 0, 0, 0.54)
+}
+
+.h-90 {
+    height: 90%;
+}
+
+.remove-default-input {
+    outline: 0!important;
+    outline-color: white;
+}
+
+.remove-default-input[type=text] {
+    font-size: 1.2rem;
+}
+
+.font-1rem {
+    font-size: 1rem!important;
+}
+
+#search {
+    height: 100vh;
+}
+
+#suggestions {
+    height: 90vh;
+    overflow: scroll;
+}
+
+.w-95 {
+    width: 95%!important;
+    margin: auto;
+}
+
+.favicon-height {
+    height: 20px;
+}
+
+.fs-08 {
+    font-size: 0.8rem;
+}
+
+.text-wrap-1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.text-wrap-3 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.color-href {
+    color: #1558d6;
+}
+
+.black {
+    color: black;
+}
+
+.fs-18 {
+    font-size: 18px;
+}
+
+.google-custom {
+    box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+    border-radius: 8px;
+}
+
+.center-fit {
+    width: 80%;
+    margin: auto;
+}
+
+#more {
+    border: 1px solid #DFE1E5;
+    border-radius: 20px;
 }
