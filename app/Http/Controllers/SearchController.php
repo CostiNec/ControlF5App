@@ -9,33 +9,38 @@ use Illuminate\Http\Request;
 class SearchController extends Controller
 {
     const LIMIT = 30;
+    const LIMIT_RESULT = 10;
 
     public function getSuggestions(Request $request)
     {
-        if (!isset($request)) {
-            die();
-        }
+        $like = '%' . $request['input'] . '%';
+        $all = Suggestion::where('keywords','like',$like)
+            ->skip(self::LIMIT*(int)$request['skip'])
+            ->limit(self::LIMIT)
+            ->get()->toArray();
+        echo json_encode($all);
+    }
 
-        try {
-            $like = '%' . $request['input'] . '%';
-            $all = Suggestion::where('keywords','like',$like)
-                ->skip(self::LIMIT*(int)$request['skip'])
-                ->limit(self::LIMIT)
-                ->get()->toArray();
-            echo json_encode($all);
-        } catch (Exception $e) {
-            echo 'Caught exception: ',  $e->getMessage(), "\n";
-        }
+    public function getResults(Request $request)
+    {
+        $results = Result::where('title','like','%'.$request['q'].'%')
+            ->orWhere('description','like','%'.$request['q'].'%')
+            ->skip((int)$request['skip']*self::LIMIT_RESULT)
+            ->limit(self::LIMIT_RESULT + 1)->get()->toArray();
+
+        echo json_encode($results);
     }
 
     public function results(Request $request)
     {
         $results = Result::where('title','like','%'.$request['q'].'%')
                     ->orWhere('description','like','%'.$request['q'].'%')
-                    ->limit(10)->get();
+                    ->limit(self::LIMIT_RESULT + 1)->get();
 
+        $count = count($results);
         return view('results',[
-            'results' => $results
+            'results' => $results,
+            'count' => $count
         ]);
     }
 }

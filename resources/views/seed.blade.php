@@ -5,7 +5,22 @@
     </div>
 
     <script type="application/javascript">
-        var sites = ['antena3','adevarul','aktual','economica','hotnews','news']
+        var sites = ['antena3','adevarul','aktual','economica','hotnews','news','agerpress']
+
+        for (let i = 1; i < 30; i++) {
+            $.ajax({
+                url: '/api/more_info',
+                type: "post",
+                async: true,
+                data: { page: i } ,
+                success: function (response) {
+                    console.log(i);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
+                }
+            });
+        }
 
         sites.forEach(site => {
             $.ajax({
@@ -28,6 +43,7 @@
         $( document ).ajaxStop(function(){
             document.getElementById('element').innerHTML = '<p>The articles was inserted</p>';
             alert('The articles was inserted');
+            window.location.replace('/');
         });
 
         function parseSiteUrls(site, url) {

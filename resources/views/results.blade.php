@@ -8,7 +8,7 @@
                 <svg style="fill:#757575;width:24px;height:24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"></path><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg>
             </div>
 
-            <div class="mb-0 mt-1" style="text-align:center;margin-top: -10px!important;margin:36px auto 18px;width:160px;line-height:0" id="hplogoo">  <img style="border:none;margin:8px 0" height="36" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png" width="92" id="hplogo" alt="Google" data-atf="1"></div>
+            <div class="mb-0 mt-1" style="text-align:center;margin-top: -10px!important;margin:36px auto 18px;width:160px;line-height:0" id="hplogoo">  <img onclick="redirectHome()" style="border:none;margin:8px 0" height="36" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png" width="92" id="hplogo" alt="Google" data-atf="1"></div>
 
             <div class="order-2 ml-3">
                 <i class="fas fa-user-circle fa-2x"></i>
@@ -17,7 +17,7 @@
 
         <div class="container">
             <div class="input-group md-form form-sm form-2 pl-0">
-                <input onclick="openSearch()" class="form-control h-unset my-0 py-1 amber-border left-search-border" id="keywords1" type="text" aria-label="Search">
+                <input onclick="openSearch()" class="form-control h-unset my-0 py-1 amber-border left-search-border" id="keywords1" type="text" aria-label="Search" value="{{$_GET['q']}}">
                 <div class="input-group-append">
                     <span onclick="redirectTo()" class="input-group-text amber lighten-3 right-search-border custom-padding" id="basic-text1">
                         <i class="fas fa-search text-grey" aria-hidden="true"></i>
@@ -25,9 +25,52 @@
                 </div>
             </div>
         </div>
-        <hr>
+
+        <div class="d-flex overflow-x-scroll">
+            <div class="ml-3 mt-3px">
+                <p class="top-selected no-wrap pb-2 fs-08 pt-1rem px-2">TOATE</p>
+            </div>
+            <div class="ml-3 mt-3px">
+                <p class="top-unselected mt-1rem fs-08 no-wrap">IMAGINI</p>
+            </div>
+            <div class="ml-3 mt-3px">
+                <p class="top-unselected mt-1rem fs-08 no-wrap">HARTI</p>
+            </div>
+            <div class="ml-3 mt-3px">
+                <p class="top-unselected mt-1rem fs-08 no-wrap">VIDEOCLIPURI</p>
+            </div>
+            <div class="ml-3 mt-3px">
+                <p class="top-unselected mt-1rem fs-08 no-wrap">STIRI</p>
+            </div>
+            <div class="ml-3 mt-3px">
+                <p class="top-unselected mt-1rem fs-08 no-wrap">CUMPARATURI</p>
+            </div>
+            <div class="ml-3 mt-3px">
+                <p class="top-unselected mt-1rem fs-08 no-wrap">CARTI</p>
+            </div>
+            <div class="ml-3 mt-3px">
+                <p class="top-unselected mt-1rem fs-08 no-wrap">ZBORURI</p>
+            </div>
+            <div class="ml-3 mt-3px">
+                <p class="top-unselected mt-1rem fs-08 no-wrap">INSTRUMENTE DE CAUTARE</p>
+            </div>
+        </div>
+        <hr class="hr">
+
+        @if ($count == 0)
+            <div class="google-custom mt-3 w-95 p-3">
+                <p class="font-1rem">Cautarea dvs. - <strong>{{$_GET['q']}}</strong> nu a returnat niciun document</p>
+                <p class="font-1rem">Sugestii</p>
+                <ul>
+                    <li class="font-1rem">Asigurati-va ca toate cuvintele sunt scrise corent</li>
+                    <li class="font-1rem">Incercati alte cuvinte cheie</li>
+                    <li class="font-1rem">Incercati cuvinte cheie mai generale</li>
+                </ul>
+            </div>
+        @endif
         <div id="results">
-            @foreach($results as $result)
+            @foreach($results as $key => $result)
+                @if ($key < 10)
                 <div class="google-custom mt-3 w-95 p-3">
                     <div class="d-flex">
                         <div class="favicon">
@@ -41,15 +84,18 @@
                         <a href="{{$result->link}}" class="fs-18 text-wrap-3 color-href">{{$result->title}}</a>
                     </div>
                     <div class="mt-2">
-                        <a href="{{$result->description}}" class="fs-08 text-wrap-3 black">{{$result->description}}</a>
+                        <a href="{{$result->link}}" class="fs-08 text-wrap-3 black">{{$result->description}}</a>
                     </div>
                 </div>
+                @endif
             @endforeach
         </div>
 
-        <div  class="border mt-4 center-fit">
-            <p id=more" class="fs-08">Mai multe rezultate</p>
+        @if ($count == 11)
+        <div onclick="moreResults()" id="more-button" class="border my-4 center-fit border-radius-20">
+            <p id=more" class="fs-08 mb-0 text-center pointer py-2 ">Mai multe rezultate</p>
         </div>
+        @endif
 
     </div>
 
@@ -64,7 +110,7 @@
             <div class="ml-4 mt-3" onclick="removeKeyword()" id="remove-keyword" style="display: none">
                 <p class="google-color"><i class="fas fa-times fa-lg"></i></p>
             </div>
-            <div class="mx-4 mt-3" onclick="redirectTo()">
+            <div class="mx-4 mt-3" onclick="redirectTo(document.getElementById('keywords2').value)">
                 <p class="google-color-blue"><i class="fas fa-search fa-lg"></i></p>
             </div>
         </div>
@@ -75,12 +121,13 @@
     </div>
 
     <script type="application/javascript">
-        var skip = 0;
+        var skip = 0, skipResults = 1;
         function openNav() {
+            disableScroll();
             let content = document.getElementById('put-grey');
             console.log(content)
             content.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-            content.style.height = '100vh';
+            content.style.height = '105%';
             content.style.width = '100%';
             content.style.zIndex = '1';
             content.style.marginTop = '-10px';
@@ -89,6 +136,7 @@
         }
 
         function closeNav() {
+            enableScroll();
             let content = document.getElementById('put-grey');
             content.removeAttribute("style")
             document.getElementById("sidenav").style.width = "0";
@@ -99,6 +147,8 @@
             let search = document.getElementById('search');
             let content = document.getElementById('out-search');
 
+            document.getElementById('keywords2').value = '{{$_GET['q']}}';
+            getSuggestions(true);
             content.style.display = 'none';
             search.removeAttribute("style")
 
@@ -166,13 +216,13 @@
 
                             let i = document.createElement('i');
                             i.setAttribute('class','fas fa-search fa-lg google-color mt-1');
-                            i.setAttribute('onclick','redirectTo()');
+                            i.setAttribute('onclick','redirectTo("' + data[index].keywords + '")');
 
                             let a = document.createElement('a');
                             a.setAttribute('class','ml-3 pb-2 font-1rem');
                             a.setAttribute('id','suggestion' + data[index].id);
                             a.setAttribute('data-name',data[index].keywords);
-                            a.setAttribute('onclick','redirectTo()');
+                            a.setAttribute('onclick','redirectTo("' + data[index].keywords + '")');
                             a.innerHTML = boldFind(keyword,data[index].keywords);
 
                             let span = document.createElement('span');
@@ -208,6 +258,10 @@
                 }
             }
             return str.join('');
+        }
+
+        function redirectHome() {
+            window.location.replace('/');
         }
 
         function boldFind(keyword, suggestion) {
@@ -272,8 +326,7 @@
             getSuggestions(true);
         }
 
-        function redirectTo() {
-            let search = document.getElementById('keywords2').value;
+        function redirectTo(search) {
             if (search.length > 0) {
                 let url = '/results?q=' + search;
                 window.location.replace(url);
@@ -282,8 +335,124 @@
 
         $(document).on('keypress',function(e) {
             if(e.which == 13) {
-                redirectTo();
+                redirectTo(document.getElementById('keywords2').value)
             }
         });
+
+        function disableScroll() {
+            window.addEventListener('DOMMouseScroll', preventDefault, false); // older FF
+            window.addEventListener(wheelEvent, preventDefault, wheelOpt); // modern desktop
+            window.addEventListener('touchmove', preventDefault, wheelOpt); // mobile
+            window.addEventListener('keydown', preventDefaultForScrollKeys, false);
+        }
+
+        function enableScroll() {
+            window.removeEventListener('DOMMouseScroll', preventDefault, false);
+            window.removeEventListener(wheelEvent, preventDefault, wheelOpt);
+            window.removeEventListener('touchmove', preventDefault, wheelOpt);
+            window.removeEventListener('keydown', preventDefaultForScrollKeys, false);
+        }
+
+        var keys = {37: 1, 38: 1, 39: 1, 40: 1};
+
+        function preventDefault(e) {
+            e.preventDefault();
+        }
+
+        function preventDefaultForScrollKeys(e) {
+            if (keys[e.keyCode]) {
+                preventDefault(e);
+                return false;
+            }
+        }
+
+        var supportsPassive = false;
+        try {
+            window.addEventListener("test", null, Object.defineProperty({}, 'passive', {
+                get: function () { supportsPassive = true; }
+            }));
+        } catch(e) {}
+
+        var wheelOpt = supportsPassive ? { passive: false } : false;
+        var wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
+
+        function moreResults() {
+            var results = document.getElementById('results');
+            $.ajax({
+
+                url : '/api/get_results_info',
+                type : 'POST',
+                data : {
+                    'search' : '{{$_GET['q']}}',
+                    'skip' : skipResults
+                },
+                success : function(data) {
+                    skipResults++;
+                    data = JSON.parse(data);
+
+                    if (data.length < 11) {
+                        document.getElementById('more-button').style.display = 'none';
+                    }
+                    console.log(data)
+                    for (let index = 0; index < data.length; index++) {
+                        let divGoogleCustom = document.createElement('div');
+                        divGoogleCustom.setAttribute('class','google-custom mt-3 w-95 p-3');
+
+                        let divDflex = document.createElement('div');
+                        divDflex.setAttribute('class','d-flex');
+
+                        let divFavicon = document.createElement('div');
+                        divFavicon.setAttribute('class','favicon');
+
+                        let imgFavicon = document.createElement('img');
+                        imgFavicon.setAttribute('class','favicon-height');
+                        imgFavicon.setAttribute('src',data[index]['favicon']);
+
+                        let divLink = document.createElement('div');
+                        divLink.setAttribute('class','mt-1');
+
+                        let aLink = document.createElement('a');
+                        aLink.setAttribute('class','fs-08 ml-2 text-wrap-1 w-50 black');
+                        aLink.setAttribute('href',data[index]['link']);
+                        aLink.innerHTML = data[index]['link'];
+
+                        divFavicon.appendChild(imgFavicon);
+                        divLink.appendChild(aLink);
+                        divDflex.appendChild(divFavicon);
+                        divDflex.appendChild(divLink);
+
+                        let divTitle = document.createElement('div');
+                        divTitle.setAttribute('class','mt-2');
+
+                        let aTitle = document.createElement('a');
+                        aTitle.setAttribute('class','fs-18 text-wrap-3 color-href');
+                        aTitle.setAttribute('href',data[index]['link']);
+                        aTitle.innerHTML = data[index]['title'];
+
+                        divTitle.appendChild(aTitle);
+
+                        let divDescripton = document.createElement('div');
+                        divDescripton.setAttribute('class','mt-2');
+
+                        let aDescription = document.createElement('a');
+                        aDescription.setAttribute('class','fs-08 text-wrap-3 black');
+                        aDescription.setAttribute('href',data[index]['link']);
+                        aDescription.innerHTML = data[index]['description'];
+
+                        divDescripton.appendChild(aDescription);
+
+                        divGoogleCustom.appendChild(divDflex);
+                        divGoogleCustom.appendChild(divTitle);
+                        divGoogleCustom.appendChild(divDescripton);
+
+                        results.appendChild(divGoogleCustom);
+                    }
+                },
+                error : function(request,error)
+                {
+                    alert("Request: "+JSON.stringify(request));
+                }
+            });
+        }
     </script>
 @endsection

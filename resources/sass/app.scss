@@ -15,7 +15,7 @@
 
 body, html {
     margin: 0;
-    height: 100vh;
+    min-height: 100vh;
     background-color: white;
 }
 
@@ -119,6 +119,10 @@ body, html {
 
 .pb-border {
     padding-bottom: 0.8rem !important;
+}
+
+.pt-border {
+    padding-top: 0.8rem !important;
 }
 
 .mt-3px {
@@ -260,4 +264,32 @@ body, html {
 #more {
     border: 1px solid #DFE1E5;
     border-radius: 20px;
+}
+
+.border-radius-20 {
+    border-radius: 20px;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.no-wrap {
+    white-space: nowrap;
+}
+
+.overflow-x-scroll {
+    overflow-x: scroll;
+}
+
+.mt-1rem {
+    margin-top: 1rem!important;
+}
+
+.pt-1rem {
+    padding-top: 1rem !important;
+}
+
+.hr {
+    margin-top: -1rem;
 }

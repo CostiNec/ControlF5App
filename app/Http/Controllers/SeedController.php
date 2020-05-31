@@ -11,6 +11,9 @@ class SeedController extends Controller
 
     public function actionAsync(){
         $site = $_POST['site'];
+        if($site == 'agerpress') {
+            $this->parseAgerpres();
+        }
         if($site == 'adevarul') {
             $this->parseAdevarul();
         }
@@ -38,6 +41,9 @@ class SeedController extends Controller
 
     public function actionAsyncArticle(){
         $site = $_POST['site'];
+        if($site == 'agerpress') {
+            $this->actionAgerpress();
+        }
         if($site == 'adevarul') {
             $this->actionAdevarul();
         }
@@ -414,5 +420,84 @@ class SeedController extends Controller
         $model['link'] = $url;
 
         self::insert($model);
+    }
+
+    /**
+     * agerpres.ro
+     */
+
+    public function parseAgerpres()
+    {
+        $links = [];
+        $doom = self::parseDoom('https://www.agerpres.ro/');
+        $count = 1;
+
+        foreach ($doom->getElementsByTagName('div') as $div) {
+            if ($div->getAttribute('class') == 'last_news shadow update_last_news') {
+                foreach ($div->getElementsByTagName('article') as $article) {
+                    $rawLinks = $article->getAttribute('onclick');
+                    $link = explode("'",$rawLinks)[count(explode('/',$rawLinks)) - 7];
+                    $link = 'https://' . substr($link, 2);
+
+                    if (self::checkUrl($link) && $count < self::ARTICLES_NUMBER+30) {
+                        array_push($links,$link);
+                        $count++;
+                    }
+                }
+            }
+        }
+
+        echo json_encode($links);
+    }
+
+    public function actionAgerpress()
+    {
+        $url = $_POST['url'];
+        $article = self::parseDoom($url);
+
+        $model['title'] = $article->getElementsByTagName('h2')->item(6)->nodeValue;
+
+        $model['description'] = '';
+
+        foreach ($article->getElementsByTagName('div') as $div) {
+            if ($div->getAttribute('class') == 'wrapper_description_articol') {
+                foreach ($div->getElementsByTagName('strong') as $strong) {
+                    $model['description'] = '<p>' . self::innerHTML($strong) . '</p>';
+                    break 2;
+                }
+            }
+        }
+        if ($model['description'] == null) {
+            $model['description'] = $model['title'];
+        }
+
+        $model['link'] = $url;
+
+        self::insert($model);
+    }
+
+    public function parseMoreInfo(Request $request)
+    {
+        $article = self::parseDoom('https://www.antena3.ro/actualitate/pagina-'.$request['page']);
+
+        foreach ($article->getElementsByTagName('ul') as $ul) {
+            if ($ul->getAttribute('class') == 'cols3') {
+                $articles = $ul;
+                break;
+            }
+        }
+        $model = [];
+        foreach ($articles->getElementsByTagName('li') as $li) {
+            if($li->getAttribute('class') != 'mobile_only') {
+                $model['title'] = $li->getElementsByTagName('a')->item(1)->nodeValue;
+                $model['description'] = $li->getElementsByTagName('a')->item(1)->nodeValue;
+                $model['link'] = 'https://www.antena3.ro'.$li->getElementsByTagName('a')->item(1)->getAttribute('href');
+
+                if (self::checkUrl($model['link'])) self::insert($model);
+            }
+
+
+        }
+
     }
 }

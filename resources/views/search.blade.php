@@ -27,7 +27,7 @@
             <div class="input-group md-form form-sm form-2 pl-0">
                 <input onclick="openSearch()" class="form-control h-unset my-0 py-1 amber-border left-search-border" id="keywords1" type="text" aria-label="Search">
                 <div class="input-group-append">
-                    <span onclick="redirectTo()" class="input-group-text amber lighten-3 right-search-border custom-padding" id="basic-text1">
+                    <span onclick="redirectTo(document.getElementById('keywords2').value)" class="input-group-text amber lighten-3 right-search-border custom-padding" id="basic-text1">
                         <i class="fas fa-search text-grey" aria-hidden="true"></i>
                     </span>
                 </div>
@@ -47,7 +47,7 @@
             <div class="ml-4 mt-3" onclick="removeKeyword()" id="remove-keyword" style="display: none">
                 <p class="google-color"><i class="fas fa-times fa-lg"></i></p>
             </div>
-            <div class="mx-4 mt-3" onclick="redirectTo()">
+            <div class="mx-4 mt-3" onclick="redirectTo(document.getElementById('keywords2').value)">
                 <p class="google-color-blue"><i class="fas fa-search fa-lg"></i></p>
             </div>
         </div>
@@ -150,13 +150,13 @@
 
                             let i = document.createElement('i');
                             i.setAttribute('class','fas fa-search fa-lg google-color mt-1');
-                            i.setAttribute('onclick','redirectTo()');
+                            i.setAttribute('onclick','redirectTo("' + data[index].keywords + '")');
 
                             let a = document.createElement('a');
                             a.setAttribute('class','ml-3 pb-2 font-1rem');
                             a.setAttribute('id','suggestion' + data[index].id);
                             a.setAttribute('data-name',data[index].keywords);
-                            a.setAttribute('onclick','redirectTo()');
+                            a.setAttribute('onclick','redirectTo("' + data[index].keywords + '")');
                             a.innerHTML = boldFind(keyword,data[index].keywords);
 
                             let span = document.createElement('span');
@@ -257,8 +257,8 @@
             getSuggestions(true);
         }
 
-        function redirectTo() {
-            let search = document.getElementById('keywords2').value;
+        function redirectTo(search) {
+            // let search = document.getElementById('keywords2').value;
             if (search.length > 0) {
                 let url = '/results?q=' + search;
                 window.location.replace(url);
@@ -267,7 +267,7 @@
 
         $(document).on('keypress',function(e) {
             if(e.which == 13) {
-                redirectTo();
+                redirectTo(document.getElementById('keywords2').value)
             }
         });
     </script>
